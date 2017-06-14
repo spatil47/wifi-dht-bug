@@ -1,0 +1,13 @@
+station_cfg =
+  {
+    ssid = "",     -- SSID of AP to connect to
+    pwd = "",      -- Password of AP to connect to
+    save = true
+  }
+
+ip_cfg =
+  {
+    ip = "",       -- Static IP to assign to NodeMCU
+    netmask = "",  -- Netmask to assign to NodeMCU
+    gateway = ""   -- Default gateway to assign to NodeMCU
+  }
