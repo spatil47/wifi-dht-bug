@@ -14,6 +14,8 @@ ip_cfg =
 
 mqtt_cfg =
   {
+    host = "",     -- MQTT broker's address
+    port = "",     -- MQTT broker's port
     user = "",     -- Username for authentication with MQTT broker
     pwd = ""       -- Password for authentication with MQTT broker
   }
