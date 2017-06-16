@@ -1,4 +1,4 @@
-dofile("wifi_cfg.lua")
+dofile("config.lua")
 
 wifi.eventmon.register(
   wifi.eventmon.STA_CONNECTED,

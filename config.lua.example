@@ -11,3 +11,9 @@ ip_cfg =
     netmask = "",  -- Netmask to assign to NodeMCU
     gateway = ""   -- Default gateway to assign to NodeMCU
   }
+
+mqtt_cfg =
+  {
+    user = "",     -- Username for authentication with MQTT broker
+    pwd = ""       -- Password for authentication with MQTT broker
+  }
