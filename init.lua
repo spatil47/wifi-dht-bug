@@ -1,6 +1,5 @@
 dofile("config.lua")
 
-
 wifi.eventmon.register(
   wifi.eventmon.STA_CONNECTED,
   function(T)

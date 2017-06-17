@@ -1,11 +1,17 @@
+dht_cfg =
+  {
+    pin = 1,
+    time = 15000
+  }
+
 tmr.create():
   alarm(
-    15000,
+    dht_cfg.time,
     tmr.ALARM_AUTO,
     function()
-      status, temp, humi, temp_dec, humi_dec = dht.read(dht_pin)
+      status, temp, humi, temp_dec, humi_dec = dht.read(dht_cfg.pin)
       if status == dht.OK then
-        print("DHT Temperature: ".. ((temp*9/5)+32) .." ; ".."Humidity: "..humi)
+        print("Temperature measured ".. ((temp*9/5)+32) .." degrees Fahrenheit. Humidity is "..humi .. "%.")
       elseif status == dht.ERROR_CHECKSUM then
         print( "Temperature/humidity measurement failed due to DHT checksum error." )
       elseif status == dht.ERROR_TIMEOUT then
