@@ -32,11 +32,16 @@ m:connect(
   mqtt_cfg.host,
   mqtt_cfg.port,
   0,
-  function(client)
-    print("Connected to MQTT broker " .. mqtt_cfg.host .. " on port " .. mqtt_cfg.port .. ".")
-  end,
+  nil,
   function(client, reason)
     print("Failed to connect to MQTT broker due to error " .. reason .. ".")
+  end
+)
+
+m:on(
+  "connect",
+  function(client)
+    print("Connected to MQTT broker " .. mqtt_cfg.host .. " on port " .. mqtt_cfg.port .. ".")
   end
 )
 
