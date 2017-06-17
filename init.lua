@@ -1,5 +1,6 @@
 dofile("config.lua")
 
+
 wifi.eventmon.register(
   wifi.eventmon.STA_CONNECTED,
   function(T)
@@ -28,7 +29,7 @@ wifi.eventmon.register(
     sntp.sync( { "pool.ntp.org", "time.nist.gov" },
       function(sec, usec, server, info)
         print("NTP synchronization with " .. server .. " successful. Time is " .. sec .. " seconds from Unix epoch.")
-        dofile("sensor.lua")
+        dofile("mqtt.lua")
       end,
       function(errcode, errnote)
         print("NTP synchronization failed due to error " .. errcode .. ".")
