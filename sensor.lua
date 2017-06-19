@@ -4,34 +4,37 @@ dht_cfg =
     time = 15000
   }
 
-mqtt_cfg.deviceInfo =
+mqtt_cfg.crouton_deviceInfo =
   {
-    name = "WiFi DHT Bug",
-    endPoints =
+    deviceInfo =
       {
-        temperature =
+        name = client_id,
+        endPoints =
           {
-            title = "Temperature",
-            ["card-type"] = "crouton-simple-text",
-            units = "degrees Fahrenheit",
-            values =
+            temperature =
               {
-                value = 70,
+                title = "Temperature",
+                ["card-type"] = "crouton-simple-text",
+                units = "degrees Fahrenheit",
+                values =
+                  {
+                    value = 70,
+                  }
+              },
+            humidity =
+              {
+                title = "Humidity",
+                ["card-type"] = "crouton-simple-text",
+                units = "percent",
+                values =
+                  {
+                    value = 40,
+                  }
               }
           },
-        humidity =
-          {
-            title = "Humidity",
-            ["card-type"] = "crouton-simple-text",
-            units = "percent",
-            values =
-              {
-                value = 40,
-              }
-          }
-      },
-    description = "AM2032 and NodeMCU-based IoT temperature and humidity sensor",
-    status = "good"
+        description = "AM2032 and NodeMCU-based IoT temperature and humidity sensor",
+        status = "good"
+      }
   }
 
 m:subscribe(
@@ -39,7 +42,7 @@ m:subscribe(
   0,
   function(c)
     print("Subscribed to Crouton inbox MQTT topic.")
-    ok, json = pcall(sjson.encode, mqtt_cfg.deviceInfo)
+    ok, json = pcall(sjson.encode, mqtt_cfg.crouton_deviceInfo)
     if ok then
       print ("Encoded Crouton device info as JSON string.")
       print ("Result: " .. json)
@@ -63,7 +66,7 @@ m:subscribe(
                 print("Temperature measured ".. ((temp*9/5)+32) .." degrees Fahrenheit. Humidity is "..humi .. "%.")
                 dht_c:publish(
                   "/outbox/"..client_id.."/temperature",
-                  "{ \"value\": \"" .. ((temp*9/5)+32) .. "\" }",
+                  "{ \"value\": " .. ((temp*9/5)+32) .. " }",
                   0,
                   0,
                   function()
@@ -72,7 +75,7 @@ m:subscribe(
                 )
                 dht_c:publish(
                   "/outbox/"..client_id.."/humidity",
-                  "{ \"value\": \"" .. humi .. "\" }",
+                  "{ \"value\": " .. humi .. " }",
                   0,
                   0,
                   function()
@@ -88,5 +91,15 @@ m:subscribe(
           )
       end
     )
+  end
+)
+
+m:on(
+  "message",
+  function(recv_c, topic, message)
+    if topic == "/inbox/"..client_id.."/deviceInfo" and message == "get" then
+      recv_c:publish("/outbox/"..client_id.."/deviceInfo", json, 0, 0)
+      print("sent")
+    end
   end
 )
