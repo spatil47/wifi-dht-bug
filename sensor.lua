@@ -4,6 +4,52 @@ dht_cfg =
     time = 15000
   }
 
+mqtt_cfg.deviceInfo =
+  {
+    name = "WiFi DHT Bug",
+    endPoints =
+      {
+        temperature =
+          {
+            title = "Temperature",
+            ["card-type"] = "crouton-simple-text",
+            units = "degrees Fahrenheit",
+            values =
+              {
+                value = 70,
+              }
+          },
+        humidity =
+          {
+            title = "Humidity",
+            ["card-type"] = "crouton-simple-text",
+            units = "percent",
+            values =
+              {
+                value = 40,
+              }
+          }
+      },
+    description = "AM2032 and NodeMCU-based IoT temperature and humidity sensor",
+    status = "good"
+  }
+
+m:subscribe(
+  "/inbox/" .. client_id .. "/deviceInfo",
+  0,
+  function(c)
+    print("Subscribed to Crouton inbox MQTT topic.")
+    ok, json = pcall(sjson.encode, mqtt_cfg.deviceInfo)
+    if ok then
+      print ("Encoded Crouton device info as JSON string.")
+      print ("Result: " .. json)
+    else
+      print ("Failed to encode Crouton device info as JSON string.")
+    end
+    c:publish("/outbox/"..client_id.."/deviceInfo", json, 0, 0)
+  end
+)
+
 tmr.create():
   alarm(
     dht_cfg.time,
