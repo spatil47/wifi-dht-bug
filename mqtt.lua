@@ -1,4 +1,4 @@
-client_id = string.format("node-%x", node.chipid())
+client_id = string.format("bug-%x", node.chipid())
 
 m = mqtt.Client(client_id, 120, mqtt_cfg.user, mqtt_cfg.pwd)
 
